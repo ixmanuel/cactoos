@@ -25,6 +25,7 @@ package org.cactoos.text;
 
 import org.cactoos.TextHasString;
 import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 /**
@@ -52,6 +53,30 @@ public final class SubTextTest {
             "Can't cut a text with start",
             new SubText("cut here", 2),
             new TextHasString("t here")
+        );
+    }
+
+    public final void testComparing() throws Exception {
+        MatcherAssert.assertThat(
+            "Can't compare sub texts",
+            new SubText(
+                "from here to there", 5
+            ).compareTo(
+                new StringAsText("here to there")
+            ),
+            Matchers.is(0)
+        );
+    }
+
+    public final void testComparing2() throws Exception {
+        MatcherAssert.assertThat(
+            "Can't compare sub texts",
+            new SubText(
+                "from here to there", 5
+            ).compareTo(
+                new SubText("from here to there", 18)
+            ),
+            Matchers.is(0)
         );
     }
 
