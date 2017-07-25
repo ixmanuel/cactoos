@@ -23,6 +23,8 @@
  */
 package org.cactoos.text;
 
+import org.cactoos.func.IoCheckedScalar;
+import org.cactoos.Scalar;
 import java.io.IOException;
 import org.cactoos.Text;
 
@@ -32,6 +34,7 @@ import org.cactoos.Text;
  * <p>There is no thread-safety guarantee.
  *
  * @author Vseslav Sekorin (vssekorin@gmail.com)
+ * @author Ix (ixmanuel@yahoo.com)
  * @version $Id$
  * @since 0.1
  */
@@ -40,19 +43,45 @@ public final class TrimmedText implements Text {
     /**
      * The text.
      */
-    private final Text origin;
+    private final Scalar<String> origin;
 
     /**
      * Ctor.
+     *
+     * @param text The text
+     */
+    public TrimmedText(final Text text, final char chr) {
+        this(
+            () ->
+                text.asString().replaceAll(
+                    new FormattedText("^%s+", chr).asString(), ""
+                ).replaceAll(
+                    new FormattedText("%s+$", chr).asString(), ""
+                )
+        );
+    }
+
+    /**
+     * Ctor.
+     *
      * @param text The text
      */
     public TrimmedText(final Text text) {
-        this.origin = text;
+        this(() -> text.asString().trim());
+    }
+
+    /**
+     * Ctor.
+     *
+     * @param text The text
+     */
+    private TrimmedText(final Scalar<String> scalar) {
+        this.origin = scalar;
     }
 
     @Override
     public String asString() throws IOException {
-        return this.origin.asString().trim();
+        return new IoCheckedScalar<String>(this.origin).value();
     }
 
     @Override
