@@ -23,37 +23,34 @@
  */
 package org.cactoos.list;
 
-import java.util.Iterator;
+import org.cactoos.CountOf;
+import org.cactoos.ScalarHasValue;
+import org.cactoos.text.TextOf;
+import org.hamcrest.MatcherAssert;
+import org.junit.Test;
 
 /**
- * Endless iterable.
- *
- * <p>If you need to repeat certain amount of time,
- * use {@link RepeatIterable}.</p>
- *
- * @author Yegor Bugayenko (yegor256@gmail.com)
+ * Test case for {@link CharactersOf}.
+ * @author Ix (ixmanuel@yahoo.com)
  * @version $Id$
- * @param <T> Element type
- * @since 0.4
+ * @since 0.12
+ * @checkstyle JavadocMethodCheck (500 lines)
  */
-public final class EndlessOf<T> implements Iterable<T> {
+public final class CharactersOfTest {
 
-    /**
-     * Element to repeat.
-     */
-    private final T element;
-
-    /**
-     * Ctor.
-     * @param elm To repeat
-     */
-    public EndlessOf(final T elm) {
-        this.element = elm;
-    }
-
-    @Override
-    public Iterator<T> iterator() {
-        return new EndlessIterator<>(this.element);
+    @Test
+    public void convertsTextToIterableOfChars() {
+        MatcherAssert.assertThat(
+            "Can't convert array to a iterable of chars",
+            new CountOf(
+                new CharactersOf<>(
+                    new TextOf("abc")
+                )
+            ),
+            // @checkstyle MagicNumber (1 line)
+            new ScalarHasValue<>(3)
+        );
     }
 
 }
+

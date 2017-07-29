@@ -40,20 +40,6 @@ import org.junit.Test;
 public final class ArrayOfTest {
 
     @Test
-    public void convertsTextToIterableOfChars() {
-        MatcherAssert.assertThat(
-            "Can't convert array to a iterable of chars",
-            new CountOf(
-                new ArrayOf<>(
-                    new TextOf("abc")
-                )
-            ),
-            // @checkstyle MagicNumber (1 line)
-            new ScalarHasValue<>(3)
-        );
-    }
-
-    @Test
     public void convertsScalarsToIterable() {
         MatcherAssert.assertThat(
             "Can't convert scalars to iterable",
@@ -85,7 +71,7 @@ public final class ArrayOfTest {
     public void convertsMapToIterable() {
         final String expected = "hello, ";
         MatcherAssert.assertThat(
-            "Can't flatten a map to an iterable of values",
+            "Can't flat a map into an interable of values",
             new ItemOfIterable<>(
                 new ArrayOf<>(
                     new MapOf<Integer, String>(

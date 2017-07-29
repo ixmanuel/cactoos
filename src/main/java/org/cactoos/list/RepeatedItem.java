@@ -28,54 +28,59 @@ import org.cactoos.Scalar;
 import org.cactoos.func.UncheckedScalar;
 
 /**
- * Iterator that never ends.
+ * Repeat an element.
  *
- * <p>If you need to repeat certain amount of time,
- * use {@link RepeatedIterator}.</p>
+ * <p>If you need to repeat endlessly, use {@link EndlessItem}.</p>
  *
+ * @author Kirill (g4s8.public@gmail.com)
  * @author Yegor Bugayenko (yegor256@gmail.com)
  * @version $Id$
  * @param <T> Element type
- * @since 0.4
+ * @since 0.1
  */
-public final class EndlessIterator<T> implements Iterator<T> {
+public final class RepeatedItem<T> implements Iterable<T> {
 
     /**
-     * The element to repeat.
+     * Element to repeat.
      */
     private final UncheckedScalar<T> element;
 
     /**
-     * Ctor.
-     * @param elm Element to repeat
+     * Repeat count.
      */
-    public EndlessIterator(final T elm) {
-        this(() -> elm);
+    private final int count;
+
+    /**
+     * Ctor.
+     * @param elm The element to repeat
+     * @param total The total number of repetitions
+     */
+    public RepeatedItem(final T elm, final int total) {
+        this(() -> elm, total);
     }
 
     /**
      * Ctor.
-     * @param elm Element to repeat
+     * @param elm The element to repeat
+     * @param total The total number of repetitions
      */
-    public EndlessIterator(final Scalar<T> elm) {
-        this(new UncheckedScalar<>(elm));
+    public RepeatedItem(final Scalar<T> elm, final int total) {
+        this(new UncheckedScalar<T>(elm), total);
     }
 
     /**
      * Ctor.
-     * @param elm Element to repeat
+     * @param elm The element to repeat
+     * @param total The total number of repetitions
      */
-    public EndlessIterator(final UncheckedScalar<T> elm) {
+    public RepeatedItem(final UncheckedScalar<T> elm, final int total) {
         this.element = elm;
+        this.count = total;
     }
 
     @Override
-    public boolean hasNext() {
-        return true;
+    public Iterator<T> iterator() {
+        return new RepeatedIterator<>(this.element, this.count);
     }
 
-    @Override
-    public T next() {
-        return this.element.value();
-    }
 }
