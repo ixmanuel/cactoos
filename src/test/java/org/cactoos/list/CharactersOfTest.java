@@ -94,6 +94,5 @@ public final class CharactersOfTest {
             new ScalarHasValue<>(12)
         );
     }
-
 }
 
